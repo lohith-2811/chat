@@ -2,7 +2,10 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { io } from 'socket.io-client';
 
 // --- CONFIGURATION ---
-const BACKEND_URL = 'https://chat-sec.onrender.com'; 
+// We pull the URL from the .env file. 
+// If it's not found, it falls back to localhost for development safety.
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000';
+
 const LONG_PRESS_DURATION = 500; // ms for long press detection
 
 let tempMessageIdCounter = 0; 
@@ -87,6 +90,7 @@ const ChatClient = () => {
 
   // --- SOCKET SETUP EFFECT ---
   useEffect(() => {
+    console.log("Connecting to:", BACKEND_URL); // Debugging log to ensure ENV is loaded
     const socket = io(BACKEND_URL);
     socketRef.current = socket;
 
